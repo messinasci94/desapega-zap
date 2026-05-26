@@ -87,18 +87,50 @@
 <body>
 
 <nav>
-  <div class="logo">Desapega<span class="logo-dot">.</span>ZAP</div>
+  <a href="#" style="display:flex;align-items:center">
+    <img src="logo.png" alt="Desapega.ZAP" style="height:48px;width:auto">
+  </a>
   <a href="#entrar" class="nav-cta">Entrar no grupo</a>
 </nav>
 
-<div class="ticker-wrap">
-  <div class="ticker">
-    🔨 Leilão ativo &nbsp;·&nbsp; <span>iPhone 13</span> · lance atual R$ 890 &nbsp;·&nbsp; 🎮 PS5 · R$ 1.200 &nbsp;·&nbsp; 👗 Bolsa · R$ 180 &nbsp;·&nbsp; 📸 Canon T7i · R$ 1.500 &nbsp;·&nbsp; 🛋️ Sofá 3 lugares · R$ 320 &nbsp;·&nbsp; 💻 MacBook Air M1 · R$ 4.200 &nbsp;·&nbsp;
-    🔨 Leilão ativo &nbsp;·&nbsp; <span>iPhone 13</span> · lance atual R$ 890 &nbsp;·&nbsp; 🎮 PS5 · R$ 1.200 &nbsp;·&nbsp; 👗 Bolsa · R$ 180 &nbsp;·&nbsp; 📸 Canon T7i · R$ 1.500 &nbsp;·&nbsp; 🛋️ Sofá 3 lugares · R$ 320 &nbsp;·&nbsp; 💻 MacBook Air M1 · R$ 4.200 &nbsp;·&nbsp;
+<div style="position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);overflow:hidden;height:48px">
+  <!-- Ticker fallback (aparece quando não há leilões ativos) -->
+  <div class="ticker-wrap" id="ticker-fallback" style="border:none;padding:0;height:48px;display:flex;align-items:center">
+    <div class="ticker">
+      🔨 Nenhum leilão ativo no momento &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; Novos lotes toda semana &nbsp;·&nbsp; Desapega, vende, economiza! &nbsp;·&nbsp;
+      🔨 Nenhum leilão ativo no momento &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; Novos lotes toda semana &nbsp;·&nbsp; Desapega, vende, economiza! &nbsp;·&nbsp;
+    </div>
   </div>
+  <!-- Widget de leilões ao vivo (sobrepõe o fallback quando carrega) -->
+  <iframe
+    id="widget-leilao"
+    src="http://124.198.128.183:3008/widget-leilao"
+    style="position:absolute;top:0;left:0;width:100%;height:48px;border:none;background:transparent"
+    scrolling="no"
+    frameborder="0"
+    title="Leilões ativos"
+    onload="verificarIframe(this)">
+  </iframe>
 </div>
 
+<script>
+function verificarIframe(iframe) {
+  try {
+    const vazio = !iframe.contentDocument || iframe.contentDocument.body.innerHTML.trim() === '';
+    if (vazio) {
+      iframe.style.display = 'none';
+    } else {
+      document.getElementById('ticker-fallback').style.display = 'none';
+    }
+  } catch(e) {
+    // Cross-origin — assume que carregou e esconde o fallback
+    document.getElementById('ticker-fallback').style.display = 'none';
+  }
+}
+</script>
+
 <div class="hero">
+  <img src="logo.png" alt="Desapega.ZAP" style="height:140px;width:auto;margin-bottom:1.5rem;filter:drop-shadow(0 0 40px rgba(37,211,102,0.3))">
   <div class="badge"><span class="badge-dot"></span> Marca registrada desde 2022 · Leilão 100% pelo WhatsApp</div>
   <h1>Compre e venda com <em>segurança</em><br>sem pagar <span class="strike">absurdo</span> de taxa</h1>
   <p class="subtitle">O marketplace de leilão de desapego mais acessível do Brasil — seu item pode valer muito mais do que você imagina. Deixa o mercado decidir o preço!</p>
