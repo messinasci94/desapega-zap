@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Política de Pagamentos — Desapega.ZAP</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#25D366;--bg:#0E0E0E;--surface:#1A1A1A;--border:rgba(255,255,255,0.08);--text:#F5F0E8;--muted:#888}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(14,14,14,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo img{height:40px;width:auto}
+.nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-size:0.85rem;font-weight:600;text-decoration:none;padding:0.4rem 1rem;border-radius:50px;border:1px solid rgba(37,211,102,0.3)}
+.container{max-width:800px;margin:0 auto;padding:3rem 1.5rem 5rem}
+.doc-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.25);color:var(--green);font-size:0.75rem;font-weight:600;padding:0.3rem 1rem;border-radius:50px;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.5px}
+h1{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1px;margin-bottom:0.5rem}
+.update{font-size:0.82rem;color:var(--muted);margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+h2{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--green);margin:2rem 0 0.75rem}
+p{font-size:0.92rem;color:rgba(245,240,232,0.85);margin-bottom:0.75rem}
+ul{padding-left:1.25rem;margin-bottom:0.75rem}
+li{font-size:0.92rem;color:rgba(245,240,232,0.85);margin-bottom:0.4rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin:0.75rem 0}
+.card.green{border-color:rgba(37,211,102,0.3);background:rgba(37,211,102,0.04)}
+.alert{background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:1rem;margin:1.5rem 0;font-size:0.85rem}
+.alert strong{color:#F5A623}
+footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center;font-size:0.78rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="Desapega.ZAP"></a>
+  <a href="index.html" class="nav-back">← Voltar ao site</a>
+</nav>
+<div class="container">
+  <div class="doc-badge">💳 Pagamentos</div>
+  <h1>Política de Pagamentos e Reembolsos</h1>
+  <div class="update">Última atualização: 30 de maio de 2026 · Versão 1.0</div>
+
+  <h2>1. Processador de pagamentos</h2>
+  <p>Todos os pagamentos da plataforma Desapega.ZAP são processados pelo <strong>Mercado Pago</strong>, empresa certificada PCI-DSS. Não armazenamos dados de cartão ou informações bancárias em nossos sistemas.</p>
+
+  <h2>2. Formas de pagamento aceitas</h2>
+  <div class="card green">
+    <ul style="margin:0">
+      <li><strong>PIX</strong> — aprovação imediata, disponível 24h/7 dias</li>
+      <li>Outros métodos conforme disponibilidade do Mercado Pago</li>
+    </ul>
+  </div>
+
+  <h2>3. Taxas da plataforma</h2>
+  <div class="card">
+    <ul style="margin:0">
+      <li><strong>Ticket de anúncio (1 grupo):</strong> R$ 3,00</li>
+      <li><strong>Ticket Premium (múltiplos grupos):</strong> R$ 5,00</li>
+      <li><strong>Pacote 10x tickets:</strong> R$ 20,00</li>
+      <li><strong>Intermediação até R$ 400,00:</strong> R$ 20,00 fixo</li>
+      <li><strong>Intermediação acima de R$ 400,00:</strong> 5% do valor do arremate</li>
+    </ul>
+  </div>
+
+  <h2>4. Como o dinheiro é recebido — Intermediação</h2>
+  <p>No serviço de intermediação, o fluxo de pagamento funciona assim:</p>
+  <ol style="padding-left:1.25rem;font-size:0.92rem;color:rgba(245,240,232,0.85)">
+    <li style="margin-bottom:0.5rem">Comprador paga a <strong>taxa de intermediação</strong> via PIX para a plataforma</li>
+    <li style="margin-bottom:0.5rem">Após confirmação, é criada a Sala VIP com comprador, vendedor e admin</li>
+    <li style="margin-bottom:0.5rem">Comprador envia o <strong>valor do produto</strong> para o admin intermediador</li>
+    <li style="margin-bottom:0.5rem">Vendedor envia o produto após confirmação do recebimento do valor</li>
+    <li style="margin-bottom:0.5rem">Comprador confirma o recebimento do produto</li>
+    <li>Admin <strong>libera o valor ao vendedor</strong></li>
+  </ol>
+
+  <h2>5. Prazo de repasse ao vendedor</h2>
+  <p>Após a confirmação do recebimento pelo comprador, o valor é repassado ao vendedor em até <strong>1 dia útil</strong> via PIX.</p>
+
+  <h2>6. Política de reembolso</h2>
+  <div class="card green">
+    <p style="margin:0"><strong>Tickets de anúncio:</strong> não são reembolsáveis após uso (publicação do lote).</p>
+  </div>
+  <div class="card">
+    <p style="margin:0"><strong>Taxa de intermediação:</strong> reembolsável apenas se a intermediação não puder ser realizada por falha da plataforma.</p>
+  </div>
+  <div class="card">
+    <p style="margin:0"><strong>Valor do produto (intermediado):</strong> devolvido ao comprador caso o produto não seja enviado pelo vendedor ou chegue em condições diferentes do anunciado — sujeito a análise do admin.</p>
+  </div>
+
+  <h2>7. Contestação de pagamentos</h2>
+  <p>Em caso de divergência ou problema com pagamento, entre em contato via WhatsApp <strong>+55 11 91669-1942</strong> com o número da transação (código INT-XXXX). Analisaremos em até 3 dias úteis.</p>
+
+  <div class="alert"><strong>⚠️ Negociações sem intermediação:</strong> A plataforma não se responsabiliza por pagamentos realizados diretamente entre usuários sem uso do serviço de intermediação. Negocie com segurança!</div>
+
+  <h2>8. Prevenção a fraudes</h2>
+  <ul>
+    <li>Nunca compartilhe dados bancários no grupo público</li>
+    <li>Pagamentos da plataforma são sempre gerados pelo bot — nunca por usuários individualmente</li>
+    <li>Em caso de suspeita de fraude, contate um admin imediatamente</li>
+    <li>A plataforma nunca solicita senha, dados de cartão ou token bancário</li>
+  </ul>
+
+  <h2>9. Contato</h2>
+  <p>Dúvidas sobre pagamentos: <strong>+55 11 91669-1942</strong> (WhatsApp) · Instagram: <strong>@superleilaoairsoft</strong></p>
+</div>
+<footer>© 2022–2026 Desapega.ZAP · <a href="termos-de-uso.html" style="color:var(--green)">Termos de Uso</a> · <a href="privacidade.html" style="color:var(--green)">Privacidade</a> · <a href="cookies.html" style="color:var(--green)">Cookies</a></footer>
+</body>
+</html>
