@@ -96,13 +96,41 @@
   </div>
 </nav>
 
-<div class="ticker-wrap">
-  <div class="ticker">
-    🔨 Leilão ativo &nbsp;·&nbsp; <span>Entre no grupo</span> e veja os lotes &nbsp;·&nbsp; 🛒 Novos itens toda semana &nbsp;·&nbsp; 🔐 Intermediação opcional &nbsp;·&nbsp; ⭐ Reputação de vendedores &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp;
-    🔨 Leilão ativo &nbsp;·&nbsp; <span>Entre no grupo</span> e veja os lotes &nbsp;·&nbsp; 🛒 Novos itens toda semana &nbsp;·&nbsp; 🔐 Intermediação opcional &nbsp;·&nbsp; ⭐ Reputação de vendedores &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp;
+<div style="position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);overflow:hidden;height:44px">
+  <div class="ticker-wrap" style="border:none;background:transparent;height:44px;display:flex;align-items:center">
+    <div class="ticker" id="ticker-leiloes">
+      🔨 Carregando leilões ativos... &nbsp;·&nbsp; Aguarde &nbsp;·&nbsp;
+      🔨 Carregando leilões ativos... &nbsp;·&nbsp; Aguarde &nbsp;·&nbsp;
+    </div>
   </div>
 </div>
 
+<script>
+async function carregarTicker() {
+  try {
+    const res  = await fetch('leiloes-ativos.json?v=' + Date.now());
+    const data = await res.json();
+    const ticker = document.getElementById('ticker-leiloes');
+
+    if (!data.leiloes || data.leiloes.length === 0) {
+      ticker.innerHTML =
+        '🛒 Nenhum leilão ativo no momento &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp;' +
+        '🛒 Nenhum leilão ativo no momento &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp;';
+      return;
+    }
+
+    const itens = data.leiloes.map(l =>
+      `🔨 <span style="color:var(--green);font-weight:600">${l.titulo || 'Leilão'}</span> &nbsp;·&nbsp; Lance atual: <strong>${l.lanceAtual}</strong>${l.encerramento ? ' &nbsp;·&nbsp; Encerra ' + l.encerramento : ''}`
+    ).join(' &nbsp;&nbsp;·&nbsp;&nbsp; ');
+
+    ticker.innerHTML = itens + ' &nbsp;&nbsp;·&nbsp;&nbsp; ' + itens;
+  } catch (e) {
+    // mantém o texto padrão se falhar
+  }
+}
+
+carregarTicker();
+</script>
 <div class="hero">
   <img src="logo.png" alt="Desapega.ZAP" style="height:140px;width:auto;margin-bottom:1.5rem;filter:drop-shadow(0 0 40px rgba(37,211,102,0.3))">
   <div class="badge"><span class="badge-dot"></span> Desapegando com segurança desde 2022 · Leilão 100% pelo WhatsApp</div>
