@@ -32,5 +32,4 @@ jobs:
           git config user.name "O Leiloeiro Bot"
           git config user.email "bot@desapegazap.com.br"
           git add leiloes-ativos.json
-          git diff --staged --quiet || git commit -m "[bot] Atualiza leilões ativos - $(date '+%d/%m %H:%M')"
-          git push
+          git diff --staged --quiet || (git commit -m "[bot] Atualiza leilões ativos - $(date '+%d/%m %H:%M')" && git pull --rebase && git push)
