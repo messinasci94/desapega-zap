@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/png" href="logo_sf.png">
+<link rel="apple-touch-icon" href="logo_sf.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Desapega.ZAP — Leilão de Desapego pelo WhatsApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #25D366; --green-dark: #128C7E; --amber: #F5A623;
+    --bg: #0E0E0E; --surface: #1A1A1A; --surface2: #222222;
+    --text: #F5F0E8; --muted: #888; --border: rgba(255,255,255,0.08);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: rgba(14,14,14,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+  .logo-dot { color: var(--green); }
+  .nav-cta { background: var(--green); color: #000; font-weight: 700; font-size: 0.85rem; padding: 0.5rem 1.25rem; border-radius: 50px; text-decoration: none; transition: opacity 0.2s; }
+  .nav-cta:hover { opacity: 0.85; }
+  .hero { min-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 1.5rem 3rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(37,211,102,0.12) 0%, transparent 70%); pointer-events: none; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.25); color: var(--green); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.5px; padding: 0.35rem 1rem; border-radius: 50px; margin-bottom: 1.5rem; text-transform: uppercase; }
+  .badge-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.8rem, 8vw, 5.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -2px; max-width: 800px; margin-bottom: 1.25rem; }
+  h1 em { font-style: normal; color: var(--green); }
+  h1 .strike { position: relative; color: var(--muted); }
+  h1 .strike::after { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 3px; background: var(--amber); }
+  .subtitle { font-size: 1.15rem; color: var(--muted); max-width: 520px; line-height: 1.6; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #000; font-weight: 700; font-size: 1rem; padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none; transition: transform 0.2s, opacity 0.2s; }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+  .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text); font-weight: 500; font-size: 1rem; padding: 0.9rem 2rem; border-radius: 50px; border: 1px solid var(--border); text-decoration: none; transition: border-color 0.2s, background 0.2s; }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+  .whatsapp-icon { width: 20px; height: 20px; }
+  .stats { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; padding: 2rem; margin: 0 auto; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); max-width: 700px; width: 100%; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--green); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+  section { padding: 5rem 1.5rem; max-width: 1000px; margin: 0 auto; }
+  .section-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 0.75rem; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 1rem; }
+  .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.6; max-width: 480px; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.2s; }
+  .step:hover { border-color: rgba(37,211,102,0.3); }
+  .step-num { font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800; color: rgba(255,255,255,0.05); position: absolute; top: -8px; right: 12px; line-height: 1; }
+  .step-icon { width: 40px; height: 40px; background: rgba(37,211,102,0.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.2rem; }
+  .step h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .step p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+  .advantages { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 3rem; }
+  .advantage { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .adv-icon { width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .adv-green { background: rgba(37,211,102,0.12); }
+  .adv-amber { background: rgba(245,166,35,0.12); }
+  .adv-blue { background: rgba(59,130,246,0.12); }
+  .adv-red { background: rgba(239,68,68,0.12); }
+  .advantage h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .advantage p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 3rem; }
+  .compare-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+  .compare-card.highlight { border-color: var(--green); background: rgba(37,211,102,0.04); }
+  .compare-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+  .compare-card ul { list-style: none; }
+  .compare-card li { font-size: 0.85rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border); color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .compare-card li:last-child { border-bottom: none; }
+  .compare-card li b { color: var(--text); font-weight: 500; }
+  .check { color: var(--green); font-weight: 700; }
+  .cross { color: #E24B4A; }
+  .cta-section { text-align: center; padding: 6rem 1.5rem; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(circle, rgba(37,211,102,0.1) 0%, transparent 70%); pointer-events: none; }
+  .cta-section h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 1rem; }
+  .cta-section p { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--muted); }
+  .ticker-wrap { overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.7rem 0; background: var(--surface); }
+  .ticker { display: inline-flex; gap: 3rem; white-space: nowrap; animation: ticker 20s linear infinite; font-size: 0.78rem; color: var(--muted); }
+  .ticker span { color: var(--green); font-weight: 600; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (max-width: 600px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    nav { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" style="display:flex;align-items:center">
+    <img src="logo.png" alt="Desapega.ZAP" style="height:48px;width:auto">
+  </a>
+  <div style="display:flex;align-items:center;gap:1.5rem">
+    <a href="tutorial.html" style="color:var(--muted);font-size:0.85rem;font-weight:600;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Tutorial</a>
+    <a href="leiloes.html" style="color:var(--muted);font-size:0.85rem;font-weight:600;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Leilões</a>
+    <a href="https://wa.me/5511916691942" target="_blank" title="Falar com o Bot" style="color:var(--muted);display:flex;align-items:center;transition:color 0.2s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--muted)'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+    <a href="https://instagram.com/desapegazap" target="_blank" title="@desapegazap" style="color:var(--muted);display:flex;align-items:center;transition:color 0.2s" onmouseover="this.style.color='#E1306C'" onmouseout="this.style.color='var(--muted)'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <button onclick="entrarNoGrupo()" class="nav-cta" style="border:none;cursor:pointer">Entrar no grupo</button>
+  </div>
+</nav>
+
+<div style="position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);overflow:hidden;height:44px">
+  <div class="ticker-wrap" style="border:none;background:transparent;height:44px;display:flex;align-items:center">
+    <div class="ticker" id="ticker-leiloes">
+      🔨 Carregando leilões ativos... &nbsp;·&nbsp; Aguarde &nbsp;·&nbsp;
+      🔨 Carregando leilões ativos... &nbsp;·&nbsp; Aguarde &nbsp;·&nbsp;
+    </div>
+  </div>
+</div>
+
+<script>
+async function carregarTicker() {
+  try {
+    const res  = await fetch('leiloes-ativos.json?v=' + Date.now());
+    const data = await res.json();
+    const ticker = document.getElementById('ticker-leiloes');
+
+    if (!data.leiloes || data.leiloes.length === 0) {
+      ticker.innerHTML =
+        '🛒 Nenhum leilão ativo no momento &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp;' +
+        '🛒 Nenhum leilão ativo no momento &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp;';
+      return;
+    }
+
+    const itens = data.leiloes.map(l =>
+      `🔨 <span style="color:var(--green);font-weight:600">${l.titulo || 'Leilão'}</span> &nbsp;·&nbsp; Lance atual: <strong>${l.lanceAtual}</strong>${l.encerramento ? ' &nbsp;·&nbsp; Encerra ' + l.encerramento : ''}`
+    ).join(' &nbsp;&nbsp;·&nbsp;&nbsp; ');
+
+    ticker.innerHTML = itens + ' &nbsp;&nbsp;·&nbsp;&nbsp; ' + itens;
+  } catch (e) {
+    // mantém o texto padrão se falhar
+  }
+}
+
+carregarTicker();
+</script>
+<div class="hero">
+  <img src="logo.png" alt="Desapega.ZAP" style="height:140px;width:auto;margin-bottom:1.5rem;filter:drop-shadow(0 0 40px rgba(37,211,102,0.3))">
+  <div class="badge"><span class="badge-dot"></span> Desapegando com segurança desde 2022 · Leilão 100% pelo WhatsApp</div>
+  <h1>Compre e venda com <em>segurança</em><br>sem pagar <span class="strike">absurdo</span> de taxa</h1>
+  <p class="subtitle">O marketplace de leilão de desapego mais acessível do Brasil — seu item pode valer muito mais do que você imagina. Deixa o mercado decidir o preço!</p>
+  <div class="hero-actions">
+    <button onclick="entrarNoGrupo()" class="btn-primary" id="entrar">
+      <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      <span id="btn-hero-text">Entrar no grupo agora</span>
+    </button>
+    <a href="#como-funciona" class="btn-secondary">Como funciona ↓</a>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:center;padding:0 1.5rem">
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" style="display:flex;align-items:center;gap:8px">
+        <span style="text-decoration:line-through;color:var(--muted);font-size:1.3rem">R$5</span>
+        <span style="background:rgba(37,211,102,0.15);color:var(--green);font-size:1rem;font-weight:700;padding:2px 10px;border-radius:50px;border:1px solid rgba(37,211,102,0.3)">Grátis</span>
+      </div>
+      <div class="stat-label">Taxa por anúncio — gratuito agora</div>
+    </div>
+    <div class="stat"><div class="stat-num">+3 anos</div><div class="stat-label">Desapegando com segurança desde 2022</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Pagamento intermediado</div></div>
+    <div class="stat"><div class="stat-num">24h</div><div class="stat-label">Bot ativo o tempo todo</div></div>
+  </div>
+</div>
+
+<section id="como-funciona">
+  <div class="section-tag">Passo a passo</div>
+  <h2 class="section-title">Simples como mandar<br>uma mensagem</h2>
+  <p class="section-sub">Nosso bot cuida de tudo — abertura do lote, recebimento dos lances, encerramento e intermediação do pagamento.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><div class="step-icon">📦</div><h3>Anuncie seu item</h3><p>Manda foto e preço mínimo no grupo. O bot cria o lote automaticamente e anuncia para todos.</p></div>
+    <div class="step"><div class="step-num">02</div><div class="step-icon">🔨</div><h3>Lances em tempo real</h3><p>Compradores dão lances digitando no chat. O bot registra, notifica e conta regressiva automática.</p></div>
+    <div class="step"><div class="step-num">03</div><div class="step-icon">🔐</div><h3>Pagamento seguro</h3><p>O vencedor paga para a intermediação. O valor só é liberado ao vendedor após confirmação do recebimento.</p></div>
+    <div class="step"><div class="step-num">04</div><div class="step-icon">✅</div><h3>Entrega confirmada</h3><p>Comprador confirmou? Vendedor recebe. Simples, seguro e automático — sem burocracia.</p></div>
+  </div>
+</section>
+
+<section id="vantagens" style="border-top:1px solid var(--border)">
+  <div class="section-tag">Por que escolher</div>
+  <h2 class="section-title">Segurança real sem<br>cobrar pela alma</h2>
+  <p class="section-sub">Mesma proteção de grandes plataformas, sem as taxas abusivas que comem seu lucro.</p>
+  <div class="advantages">
+    <div class="advantage"><div class="adv-icon adv-green">🛡️</div><div><h3>Intermediação opcional e transparente</h3><p>Se você conhece e confia no vendedor, negocie direto. Se preferir segurança extra, ative a intermediação: <b style="color:var(--green)">R$20</b> fixo até R$400 ou <b style="color:var(--green)">5%</b> acima disso — o pagamento só é liberado após confirmação do recebimento.</p></div></div>
+    <div class="advantage"><div class="adv-icon adv-amber">⚡</div><div><h3>Bot 100% automatizado</h3><p>Nosso bot <b style="color:var(--green)">O Leiloeiro</b> cuida de tudo — abertura de lote, gestão de lances, encerramento e notificações, sem intervenção humana.</p></div></div>
+    <div class="advantage"><div class="adv-icon adv-blue">💸</div><div><h3>Taxa simbólica de R$5 <span style="background:rgba(37,211,102,0.15);color:var(--green);font-size:0.7rem;padding:1px 8px;border-radius:50px;border:1px solid rgba(37,211,102,0.3);vertical-align:middle">Grátis agora</span></h3><p>Futuramente R$5 por anúncio — muito abaixo de Mercado Livre, OLX ou Enjoei. Você vende mais e lucra mais.</p></div></div>
+    <div class="advantage"><div class="adv-icon adv-red">🚫</div><div><h3>Zero golpe</h3><p>Comprador protegido contra produto que não chega. Vendedor protegido contra calote.</p></div></div>
+    <div class="advantage"><div class="adv-icon adv-green">📱</div><div><h3>Já tá no WhatsApp</h3><p>Sem app novo, sem cadastro. Você já usa — só entrar no grupo e começar.</p></div></div>
+    <div class="advantage"><div class="adv-icon adv-amber">🏆</div><div><h3>Reputação de vendedores</h3><p>Medimos e exibimos a reputação de cada vendedor. Compre com confiança sabendo o histórico de quem está vendendo.</p></div></div>
+    <div class="advantage" style="border-color:rgba(245,166,35,0.3);background:rgba(245,166,35,0.04)"><div class="adv-icon" style="background:rgba(245,166,35,0.15)">💰</div><div><h3 style="color:var(--amber)">Seu item vale mais do que você imagina</h3><p>No leilão, quem decide o preço é o mercado. Compradores competem entre si e o lance sobe — você pode desapegar por muito mais do que achava que o item valia.</p></div></div>
+  </div>
+</section>
+
+<section id="taxas" style="border-top:1px solid var(--border)">
+  <div class="section-tag">Transparência total</div>
+  <h2 class="section-title">Intermediação opcional —<br>você decide</h2>
+  <p class="section-sub">Conhece o vendedor? Negocia direto, sem custo. Quer mais segurança? Ativa a intermediação e o pagamento só é liberado quando você confirmar o recebimento.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2rem">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">Negociação direta</div>
+      <div style="font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--green)">Grátis</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">Quando você confia no vendedor</div>
+    </div>
+    <div style="background:var(--surface);border:2px solid var(--green);border-radius:16px;padding:1.5rem;text-align:center">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">Arremate até R$400</div>
+      <div style="font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--green)">R$20</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">Taxa fixa de intermediação</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">Arremate acima de R$400</div>
+      <div style="font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--green)">5%</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">Do valor do arremate</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">Grandes plataformas</div>
+      <div style="font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:#E24B4A">19%</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">Mercado Livre, Enjoei, OLX</div>
+    </div>
+  </div>
+</section>
+
+<section id="comparativo" style="border-top:1px solid var(--border)">
+  <div class="section-tag">Comparativo</div>
+  <h2 class="section-title">Desapega.ZAP vs outros</h2>
+  <div class="compare-grid">
+    <div class="compare-card highlight">
+      <h3>🔨 Desapega.ZAP</h3>
+      <ul>
+        <li><span class="check">✓</span> <b>R$5 por anúncio <span style="background:rgba(37,211,102,0.15);color:var(--green);font-size:0.7rem;padding:1px 8px;border-radius:50px;border:1px solid rgba(37,211,102,0.25)">grátis agora</span></b></li>
+        <li><span class="check">✓</span> <b>Intermediação opcional: R$20 ou 5%</b></li>
+        <li><span class="check">✓</span> <b>Proteção comprador e vendedor</b></li>
+        <li><span class="check">✓</span> <b>Reputação de vendedores medida</b></li>
+        <li><span class="check">✓</span> <b>Bot gerencia tudo 24h</b></li>
+        <li><span class="check">✓</span> <b>Marca registrada desde 2022</b></li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h3>🏪 Grandes plataformas</h3>
+      <ul>
+        <li><span class="cross">✗</span> Taxas de 10% a 19% por venda</li>
+        <li><span class="cross">✗</span> Burocracia e cadastros longos</li>
+        <li><span class="cross">✗</span> Suporte lento e robótico</li>
+        <li><span class="cross">✗</span> App obrigatório</li>
+        <li><span class="cross">✗</span> Golpes ainda acontecem</li>
+        <li><span class="cross">✗</span> Vendedor desprotegido</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="como-funciona-leilao" style="border-top:1px solid var(--border)">
+  <div class="section-tag">Passo a passo completo</div>
+  <h2 class="section-title">Como funciona o leilão<br>na prática</h2>
+  <p class="section-sub">O bot O Leiloeiro gerencia tudo automaticamente — do anúncio ao arremate.</p>
+
+  <div style="margin-top:2rem">
+    <div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:1.5rem">
+      <div style="background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);border-radius:50px;padding:4px 16px;font-size:0.75rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px">Para vendedores</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">📸</div>
+        <h3>Anuncie com o modelo</h3>
+        <p>Envie foto + modelo preenchido para o bot:<br><br>
+        <span style="font-size:0.72rem;color:var(--green);font-family:monospace;line-height:1.8">
+        🔫 TITULO<br>✅ COD.<br>📝 Descrição<br>➡️ Lance inicial: R$<br>➡️ Mínimo incremental: R$<br>🚨 Término: 00/00 às 00:00<br>📍 CEP<br>🧑‍🧒 Faço intermédio
+        </span></p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">🤖</div>
+        <h3>Bot publica e gerencia</h3>
+        <p>O bot publica o lote automaticamente. Reenviai a cada <b>1 hora</b>. Nos últimos <b>30 minutos</b> avisa de <b>5 em 5 minutos</b> — criando urgência nos compradores.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">✏️</div>
+        <h3>Gerencie seu leilão</h3>
+        <p>Precisa editar? Digite o código do leilão → bot exibe opções de editar descrição ou cancelar o lote. Tudo pelo WhatsApp.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:2.5rem">
+    <div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:1.5rem">
+      <div style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:50px;padding:4px 16px;font-size:0.75rem;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:1px">Para compradores</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">👀</div>
+        <h3>Acompanhe os lotes</h3>
+        <p>Bot reenvia os leilões ativos a cada hora. Nos últimos 30 minutos avisa de 5 em 5 — não perca o arremate!</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">🔨</div>
+        <h3>Dê seu lance</h3>
+        <p>Digite o valor no grupo. O bot valida, confirma e avisa todos quem está na liderança em tempo real.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">🏆</div>
+        <h3>Arrematou!</h3>
+        <p>Bot anuncia o vencedor. Combine direto com o vendedor ou acione a intermediação para garantia total.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:2.5rem;background:rgba(37,211,102,0.04);border:1px solid rgba(37,211,102,0.2);border-radius:16px;padding:2rem">
+    <div style="font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:1.5rem">Intermediação opcional — só quando precisar</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem">
+      <div><div style="font-size:1.5rem;margin-bottom:0.5rem">🔐</div><h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.25rem">Pagamento retido</h3><p style="font-size:0.8rem;color:var(--muted)">Comprador paga para a intermediação. Liberado só após confirmação do recebimento.</p></div>
+      <div><div style="font-size:1.5rem;margin-bottom:0.5rem">🧑‍💼</div><h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.25rem">Sala VIP</h3><p style="font-size:0.8rem;color:var(--muted)">Bot cria grupo privado com comprador, vendedor e admin para conduzir a negociação.</p></div>
+      <div><div style="font-size:1.5rem;margin-bottom:0.5rem">⭐</div><h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.25rem">Avaliação pós-compra</h3><p style="font-size:0.8rem;color:var(--muted)">Avalie o vendedor de 1 a 5. Foto + relato publicados automaticamente no grupo.</p></div>
+      <div><div style="font-size:1.5rem;margin-bottom:0.5rem">🌟</div><h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.25rem">Reputação pública</h3><p style="font-size:0.8rem;color:var(--muted)">Histórico do vendedor visível para todos. Mais reputação = mais confiança = mais vendas.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section">
+  <h2>Pronto para vender<br>sem pagar absurdo?</h2>
+  <p>Junte-se ao grupo e faça seu primeiro lance ou anúncio hoje.</p>
+  <button onclick="entrarNoGrupo()" class="btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem;border:none;cursor:pointer">
+    <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    Entrar no WhatsApp agora
+  </button>
+</div>
+
+<!-- BANNER DE CONSENTIMENTO -->
+<div id="consent-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(14,14,14,0.97);border-top:1px solid rgba(37,211,102,0.3);padding:1.25rem 1.5rem;backdrop-filter:blur(12px)">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+    <p style="font-size:0.82rem;color:var(--muted);margin:0;flex:1;min-width:220px">
+      🍪 Usamos cookies essenciais para lembrar sua preferência. Ao continuar, você concorda com nossos
+      <a href="termos-de-uso.html" style="color:var(--green)">Termos de Uso</a>,
+      <a href="privacidade.html" style="color:var(--green)">Política de Privacidade</a> e
+      <a href="cookies.html" style="color:var(--green)">Política de Cookies</a>.
+    </p>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <button onclick="recusarTermos()" style="padding:0.5rem 1rem;border-radius:50px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.82rem;cursor:pointer">Recusar</button>
+      <button onclick="aceitarTermos()" style="padding:0.5rem 1.25rem;border-radius:50px;border:none;background:var(--green);color:#000;font-weight:700;font-size:0.82rem;cursor:pointer">Aceitar e continuar</button>
+    </div>
+  </div>
+</div>
+
+<footer style="border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center">
+  <div style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;font-size:0.8rem">
+    <a href="termos-de-uso.html" style="color:var(--muted);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--muted)'">Termos de Uso</a>
+    <a href="privacidade.html" style="color:var(--muted);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--muted)'">Política de Privacidade</a>
+    <a href="cookies.html" style="color:var(--muted);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--muted)'">Política de Cookies</a>
+    <a href="pagamentos.html" style="color:var(--muted);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--muted)'">Pagamentos</a>
+    <a href="tutorial.html" style="color:var(--muted);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--muted)'">Tutorial</a>
+  </div>
+  <div style="font-size:0.78rem;color:var(--muted)">© 2022–2026 Desapega.ZAP · Feito com 💚 para o Brasil</div>
+</footer>
+
+<script>
+async function carregarGrupos() {
+  try {
+    const res = await fetch('grupos.json?v=' + Date.now());
+    return await res.json();
+  } catch (e) { return []; }
+}
+async function entrarNoGrupo() {
+  const texto = document.getElementById('btn-hero-text');
+  if (texto) texto.textContent = 'Buscando vaga...';
+  const grupos = await carregarGrupos();
+  const disponivel = grupos.find(g => g.ativo === true);
+  if (disponivel) {
+    window.open(disponivel.link, '_blank');
+  } else {
+    window.open('https://wa.me/5511916691942?text=Quero+entrar+no+grupo+de+leilão', '_blank');
+  }
+  if (texto) texto.textContent = 'Entrar no grupo agora';
+}
+
+// Consentimento
+function aceitarTermos() {
+  localStorage.setItem('dzap_consent', 'accepted');
+  localStorage.setItem('dzap_terms', Date.now());
+  document.getElementById('consent-banner').style.display = 'none';
+}
+function recusarTermos() {
+  document.getElementById('consent-banner').style.display = 'none';
+}
+window.addEventListener('DOMContentLoaded', function() {
+  if (!localStorage.getItem('dzap_consent')) {
+    setTimeout(() => {
+      document.getElementById('consent-banner').style.display = 'block';
+    }, 1500);
+  }
+});
+</script>
+</body>
+</html>
+</body>
+</html>
