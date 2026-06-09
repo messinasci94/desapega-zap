@@ -3,7 +3,7 @@ const http  = require("http");
 const fs    = require("fs");
 const path  = require("path");
 
-const WIDGET_URL = process.env.WIDGET_URL || "http://124.198.128.183:3008/widget-misto.html";
+const WIDGET_URL = process.env.WIDGET_URL || "https://124.198.128.183:3008/widget-misto.html";
 const OUTPUT     = path.join(__dirname, "leiloes-ativos.json");
 
 function fetchHTML(url) {
