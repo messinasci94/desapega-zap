@@ -3,98 +3,118 @@ const http  = require("http");
 const fs    = require("fs");
 const path  = require("path");
 
-const WIDGET_URL = process.env.WIDGET_URL || "https://painel.desapegazap.com.br/widget-misto.html";
-const OUTPUT     = path.join(__dirname, "leiloes-ativos.json");
+// Base do painel (sem o /widget-misto.html no final).
+// Ordem de prioridade:
+//   1. WIDGET_BASE_URL  (secret novo, só o domínio)
+//   2. WIDGET_URL        (secret antigo — remove /widget-misto.html e qualquer arquivo .html no fim)
+//   3. padrão hardcoded
+function resolverBaseUrl() {
+  const raw =
+    process.env.WIDGET_BASE_URL ||
+    process.env.WIDGET_URL ||
+    "https://painel.desapegazap.com.br";
+  // Remove qualquer /algumacoisa.html no final e barras sobrando
+  return raw.replace(/\/[^/]*\.html?$/i, "").replace(/\/+$/, "");
+}
 
-function fetchHTML(url) {
+const BASE_URL = resolverBaseUrl();
+const OUTPUT   = path.join(__dirname, "leiloes-ativos.json");
+
+// Os dois perfis que o próprio widget consulta
+const PERFIS = ["airsoft", "boardgames"];
+
+function fetchJSON(url) {
   return new Promise((resolve, reject) => {
     const lib = url.startsWith("https") ? https : http;
     lib.get(url, (res) => {
       let data = "";
       res.on("data", chunk => data += chunk);
-      res.on("end", () => resolve(data));
+      res.on("end", () => {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          reject(new Error(`HTTP ${res.statusCode} em ${url}`));
+          return;
+        }
+        try {
+          resolve(JSON.parse(data));
+        } catch (err) {
+          reject(new Error(`JSON inválido de ${url}: ${err.message}`));
+        }
+      });
     }).on("error", reject);
   });
 }
 
-async function main() {
-  console.log(`🔍 Buscando: ${WIDGET_URL}`);
-
-  try {
-    const html = await fetchHTML(WIDGET_URL);
-
-    // Limpa o HTML
-    const texto = html
-      .replace(/<script[\s\S]*?<\/script>/gi, "")
-      .replace(/<style[\s\S]*?<\/style>/gi, "")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/&nbsp;/g, " ")
-      .replace(/&amp;/g, "&")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    // DEBUG — mostra o texto limpo
-    console.log("\n📄 Texto limpo (primeiros 800 chars):");
-    console.log(texto.substring(0, 800));
-
-    const leiloes = [];
-
-    // Divide por "Lance Inicial:"
-    const partes = texto.split(/Lance\s+Inicial\s*:/i);
-    console.log(`\n🔪 Splits encontrados: ${partes.length - 1}`);
-
-    for (let i = 1; i < partes.length; i++) {
-      const blocoAtual = partes[i];
-      const blocoAntes = partes[i - 1];
-
-      console.log(`\n--- Bloco ${i} ---`);
-      console.log("ANTES:", blocoAntes.slice(-200));
-      console.log("ATUAL:", blocoAtual.substring(0, 300));
-
-      // Lance atual — aceita com ou sem traço antes
-      const lanceMatch = blocoAtual.match(/(?:-\s*)?Lance\s+Atual\s*:\s*R\$\s*([\d.,]+)/i);
-
-      // Encerramento
-      const encMatch = blocoAtual.match(/Encerramento\s*:\s*(\d{2}\/\d{2}\/\d{4})[,\s]+(\d{2}:\d{2})/i);
-
-      // Vendedor
-      const vendMatch = blocoAtual.match(/Vendedor\s*:\s*([^-\n]{2,25})/i);
-
-      // Título — última frase significativa antes do "Lance Inicial:"
-      // Tenta pegar após emojis ou depois do nome do grupo
-      const tituloMatch = blocoAntes.match(/(?:🥊|🔫|🛍️|🎯|➡️|⬆️|🔧|📦|🎮|💻|📱|🎲|🏹|⚔️|🪖)?\s*([A-ZÁÀÂÃÉÊÍÓÔÕÚÇ][A-ZÁÀÂÃÉÊÍÓÔÕÚÇ0-9 +\-()]{2,60})\s*$/i);
-      const titulo = tituloMatch ? tituloMatch[1].trim() : null;
-
-      const lanceAtual = lanceMatch ? `R$ ${lanceMatch[1]}` : null;
-
-      console.log("TÍTULO:", titulo);
-      console.log("LANCE ATUAL:", lanceAtual);
-
-      if (lanceAtual) {
-        leiloes.push({
-          titulo: titulo ? titulo.substring(0, 60) : "Item",
-          lanceAtual,
-          lanceInicial: `R$ ${partes[i].match(/^\s*R?\$?\s*([\d.,]+)/)?.[1] || "?"}`,
-          encerramento: encMatch ? `${encMatch[1].substring(0,5)} às ${encMatch[2]}` : null,
-          vendedor: vendMatch ? vendMatch[1].trim() : null,
-        });
-      }
-    }
-
-    const output = {
-      atualizado_em: new Date().toISOString(),
-      total: leiloes.length,
-      leiloes,
-    };
-
-    fs.writeFileSync(OUTPUT, JSON.stringify(output, null, 2));
-    console.log(`\n✅ ${leiloes.length} leilão(ões) salvos!`);
-    leiloes.forEach(l => console.log(`  · ${l.titulo} → ${l.lanceAtual}`));
-
-  } catch (err) {
-    console.error("❌ Erro:", err.message);
-    fs.writeFileSync(OUTPUT, JSON.stringify({ atualizado_em: new Date().toISOString(), total: 0, leiloes: [] }, null, 2));
-  }
+function formatarMoeda(valor) {
+  const num = parseFloat(valor) || 0;
+  return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2 });
 }
 
-main();
+function extrairTitulo(item) {
+  const desc = item.description || "";
+  const match = desc.match(/TITULO:?\s*(.*)/i);
+  if (match) return match[1].replace(/\*/g, "").trim().substring(0, 60);
+  return `Item ${item.code || ""}`.trim();
+}
+
+async function main() {
+  const leiloes = [];
+
+  for (const perfil of PERFIS) {
+    const url = `${BASE_URL}/api/auctions/active?profile=${perfil}`;
+    console.log(`🔍 Buscando perfil "${perfil}": ${url}`);
+
+    try {
+      const dados = await fetchJSON(url);
+
+      if (!Array.isArray(dados)) {
+        console.warn(`⚠️  Resposta de "${perfil}" não é um array. Ignorando.`);
+        continue;
+      }
+
+      console.log(`   → ${dados.length} leilão(ões) encontrados`);
+
+      for (const item of dados) {
+        leiloes.push({
+          titulo: extrairTitulo(item),
+          lanceAtual: formatarMoeda(item.currentBid),
+          lanceInicial: formatarMoeda(item.initialBid),
+          encerramento: item.endTime
+            ? new Date(item.endTime).toLocaleString("pt-BR")
+            : null,
+          vendedor: item.sellerName || "N/A",
+          reputacao: item.sellerStars || null,
+          tenant: item.tenantId === "boardgames" ? "Desapega.ZAP" : "Super Leilão Airsoft",
+          mediaUrl: item.mediaUrl || null,
+          mediaType: item.mediaType || null,
+        });
+      }
+    } catch (err) {
+      console.error(`❌ Erro ao buscar perfil "${perfil}": ${err.message}`);
+      // Continua tentando o outro perfil mesmo se um falhar
+    }
+  }
+
+  // Ordena igual o widget faz: quem encerra primeiro aparece primeiro
+  leiloes.sort((a, b) => {
+    if (!a.encerramento) return 1;
+    if (!b.encerramento) return -1;
+    return new Date(a.encerramento) - new Date(b.encerramento);
+  });
+
+  const output = {
+    atualizado_em: new Date().toISOString(),
+    total: leiloes.length,
+    leiloes,
+  };
+
+  fs.writeFileSync(OUTPUT, JSON.stringify(output, null, 2));
+  console.log(`\n✅ ${leiloes.length} leilão(ões) salvos!`);
+  leiloes.forEach(l => console.log(`  · [${l.tenant}] ${l.titulo} → ${l.lanceAtual}`));
+}
+
+main().catch(err => {
+  console.error("❌ Erro fatal:", err.message);
+  // Mesmo em erro fatal, grava um JSON válido (lista vazia) pra não quebrar o front-end
+  fs.writeFileSync(OUTPUT, JSON.stringify({ atualizado_em: new Date().toISOString(), total: 0, leiloes: [] }, null, 2));
+  process.exit(1);
+});
