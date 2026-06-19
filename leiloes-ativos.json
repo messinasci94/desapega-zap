@@ -1,5 +1,17 @@
 {
-  "atualizado_em": "2026-06-19T16:32:36.787Z",
-  "total": 0,
-  "leiloes": []
+  "atualizado_em": "2026-06-19T18:27:22.281Z",
+  "total": 1,
+  "leiloes": [
+    {
+      "titulo": "DBAL-A2 COM ACIONADOR REMOTO + LANTERNA COM STROBO + LASER \ud83d",
+      "lanceAtual": "R$ 185,00",
+      "lanceInicial": "R$ 185,00",
+      "encerramento": "20/06/2026, 14:30:00",
+      "vendedor": "Gabriel espinola",
+      "reputacao": "Sem avaliações",
+      "tenant": "Super Leilão Airsoft",
+      "mediaUrl": "/uploads/588052.jpg",
+      "mediaType": "image"
+    }
+  ]
 }
