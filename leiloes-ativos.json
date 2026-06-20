@@ -1,5 +1,17 @@
 {
-  "atualizado_em": "2026-06-20T16:08:10.356Z",
-  "total": 0,
-  "leiloes": []
+  "atualizado_em": "2026-06-20T17:48:36.933Z",
+  "total": 1,
+  "leiloes": [
+    {
+      "titulo": "Supressor  estilo HUXWRX",
+      "lanceAtual": "R$ 50,00",
+      "lanceInicial": "R$ 50,00",
+      "encerramento": "21/06/2026, 16:40:00",
+      "vendedor": "Luiz",
+      "reputacao": "💎 DIAMANTE",
+      "tenant": "Super Leilão Airsoft",
+      "mediaUrl": "/uploads/877411.jpg",
+      "mediaType": "image"
+    }
+  ]
 }
