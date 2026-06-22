@@ -1,5 +1,28 @@
 {
-  "atualizado_em": "2026-06-22T18:03:59.793Z",
-  "total": 0,
-  "leiloes": []
+  "atualizado_em": "2026-06-22T21:13:51.457Z",
+  "total": 2,
+  "leiloes": [
+    {
+      "titulo": "Granada de airsoft de espuleta",
+      "lanceAtual": "R$ 70,00",
+      "lanceInicial": "R$ 65,00",
+      "encerramento": "23/06/2026, 17:00:00",
+      "vendedor": "Mayara",
+      "reputacao": "⭐⭐⭐⭐",
+      "tenant": "Super Leilão Airsoft",
+      "mediaUrl": "/uploads/ADM-PAGQW-3630.jpg",
+      "mediaType": "image"
+    },
+    {
+      "titulo": "Speedloader 34 bbs Milsim",
+      "lanceAtual": "R$ 20,00",
+      "lanceInicial": "R$ 20,00",
+      "encerramento": "23/06/2026, 17:30:00",
+      "vendedor": "Mayara",
+      "reputacao": "⭐⭐⭐⭐",
+      "tenant": "Super Leilão Airsoft",
+      "mediaUrl": "/uploads/ADM-PAGQW-5442.jpg",
+      "mediaType": "image"
+    }
+  ]
 }
