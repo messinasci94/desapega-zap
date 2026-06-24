@@ -1,28 +1,5 @@
 {
-  "atualizado_em": "2026-06-24T22:24:05.741Z",
-  "total": 2,
-  "leiloes": [
-    {
-      "titulo": "🔫Lanterna X400u",
-      "lanceAtual": "R$ 70,00",
-      "lanceInicial": "R$ 60,00",
-      "encerramento": "24/06/2026, 23:00:00",
-      "vendedor": "Vila",
-      "reputacao": "Sem avaliações",
-      "tenant": "Super Leilão Airsoft",
-      "mediaUrl": "/uploads/886239.jpg",
-      "mediaType": "image"
-    },
-    {
-      "titulo": "🔫ACIONADOR DUPLO",
-      "lanceAtual": "R$ 60,00",
-      "lanceInicial": "R$ 60,00",
-      "encerramento": "24/06/2026, 23:05:00",
-      "vendedor": "Vila",
-      "reputacao": "Sem avaliações",
-      "tenant": "Super Leilão Airsoft",
-      "mediaUrl": "/uploads/976086.jpg",
-      "mediaType": "image"
-    }
-  ]
+  "atualizado_em": "2026-06-24T23:43:25.805Z",
+  "total": 0,
+  "leiloes": []
 }
