@@ -93,19 +93,18 @@
     <img src="logo.png" alt="Desapega.ZAP" style="height:48px;width:auto">
   </a>
   <div style="display:flex;align-items:center;gap:1.5rem">
-    <div style="position:relative" onmouseover="this.querySelector('.nav-dropdown').style.display='block'" onmouseleave="this.querySelector('.nav-dropdown').style.display='none'">
-      <a href="tutorial.html" style="color:var(--muted);font-size:0.85rem;font-weight:600;text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:4px" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
-        Tutorial <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+    <div style="position:relative" id="nav-guia">
+      <a href="tutorial.html" style="color:var(--muted);font-size:0.85rem;font-weight:600;text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:4px" onmouseover="showNavDropdown()" onmouseout="hideNavDropdown()">
+        Guia <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
       </a>
-      <div class="nav-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1A1A1A;border:1px solid var(--border);border-radius:12px;padding:6px;min-width:190px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.4)">
-        <div style="position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:10px;height:10px;background:#1A1A1A;border-left:1px solid var(--border);border-top:1px solid var(--border);transform:translateX(-50%) rotate(45deg)"></div>
-        <a href="tutorial.html?tab=leilao"     style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">🔨 Como funciona</a>
-        <a href="tutorial.html?tab=lances"     style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">💬 Como dar lances</a>
-        <a href="tutorial.html?tab=vender"     style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">📦 Como vender</a>
-        <a href="tutorial.html?tab=frete"      style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">🚚 Calcule o Frete</a>
-        <a href="tutorial.html?tab=intermedio" style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">🛡️ Intermédio</a>
-        <a href="tutorial.html?tab=regras"     style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">📋 Regras</a>
-        <a href="tutorial.html?tab=quemsomos"  style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">💚 Quem Somos</a>
+      <div id="nav-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#1A1A1A;border:1px solid var(--border);border-radius:12px;padding:6px;min-width:190px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.4)" onmouseover="clearNavHideTimer()" onmouseout="hideNavDropdown()">
+        <a href="tutorial.html?tab=leilao"     style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">🔨 Como funciona</a>
+        <a href="tutorial.html?tab=lances"     style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">💬 Como dar lances</a>
+        <a href="tutorial.html?tab=vender"     style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">📦 Como vender</a>
+        <a href="tutorial.html?tab=frete"      style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">🚚 Calcule o Frete</a>
+        <a href="tutorial.html?tab=intermedio" style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">🛡️ Intermédio</a>
+        <a href="tutorial.html?tab=regras"     style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">📋 Regras</a>
+        <a href="tutorial.html?tab=quemsomos"  style="display:flex;align-items:center;gap:8px;padding:0.5rem 0.75rem;border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">💚 Quem Somos</a>
       </div>
     </div>
     <a href="leiloes.html" style="color:var(--muted);font-size:0.85rem;font-weight:600;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Leilões</a>
@@ -119,8 +118,8 @@
   </div>
 </nav>
 
-<div id="sticky-ticker" style="position:sticky;top:73px;z-index:99;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(14,14,14,0.95);backdrop-filter:blur(12px);overflow:hidden;height:56px">
-  <div class="ticker-wrap" style="border:none;background:transparent;height:56px;display:flex;align-items:center">
+<div id="sticky-ticker" style="position:sticky;top:73px;z-index:99;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(14,14,14,0.95);backdrop-filter:blur(12px);overflow:hidden;height:56px;width:100%">
+  <div style="border:none;background:transparent;height:56px;display:flex;align-items:center;width:100%;overflow:hidden">
     <div class="ticker" id="ticker-leiloes" style="font-size:0.88rem;gap:3.5rem">
       🔨 Carregando leilões ativos... &nbsp;·&nbsp; Aguarde &nbsp;·&nbsp;
       🔨 Carregando leilões ativos... &nbsp;·&nbsp; Aguarde &nbsp;·&nbsp;
@@ -129,6 +128,19 @@
 </div>
 
 <script>
+// Dropdown nav com delay para não sumir ao mover o mouse
+let _navTimer;
+function showNavDropdown() {
+  clearTimeout(_navTimer);
+  document.getElementById('nav-dropdown').style.display = 'block';
+}
+function hideNavDropdown() {
+  _navTimer = setTimeout(() => {
+    document.getElementById('nav-dropdown').style.display = 'none';
+  }, 150);
+}
+function clearNavHideTimer() { clearTimeout(_navTimer); }
+
 // Alinha ticker abaixo do nav e corrige overlap do conteúdo
 (function(){
   const nav    = document.querySelector('nav');
