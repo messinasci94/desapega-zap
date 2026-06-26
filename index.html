@@ -176,23 +176,24 @@ document.addEventListener('click', e => {
   ajustar();
   window.addEventListener('resize', ajustar);
 })();
+
+async function carregarTicker() {
   try {
     const res  = await fetch('leiloes-ativos.json?v=' + Date.now());
     const data = await res.json();
     const ticker = document.getElementById('ticker-leiloes');
 
     if (!data.leiloes || data.leiloes.length === 0) {
-      ticker.innerHTML =
-        '🛒 Nenhum leilão ativo no momento &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp;' +
-        '🛒 Nenhum leilão ativo no momento &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp;';
+      const txt = '🛒 Nenhum leilão ativo &nbsp;·&nbsp; Entre no grupo e fique de olho &nbsp;·&nbsp; 💚 Desapega, vende, economiza! &nbsp;·&nbsp; ';
+      ticker.innerHTML = txt.repeat(6);
       return;
     }
 
     const itens = data.leiloes.map(l =>
-      `🔨 <span style="color:var(--green);font-weight:600">${l.titulo || 'Leilão'}</span> &nbsp;·&nbsp; Lance atual: <strong>${l.lanceAtual}</strong>${l.encerramento ? ' &nbsp;·&nbsp; Encerra ' + l.encerramento : ''}`
-    ).join(' &nbsp;&nbsp;·&nbsp;&nbsp; ');
+      `🔨 <span style="color:var(--green);font-weight:600">${l.titulo || 'Leilão'}</span> &nbsp;·&nbsp; Lance atual: <strong>${l.lanceAtual}</strong>${l.encerramento ? ' &nbsp;·&nbsp; Encerra ' + l.encerramento : ''} &nbsp;·&nbsp; `
+    ).join('');
 
-    ticker.innerHTML = itens + ' &nbsp;&nbsp;·&nbsp;&nbsp; ' + itens;
+    ticker.innerHTML = itens.repeat(6);
   } catch (e) {
     // mantém o texto padrão se falhar
   }
