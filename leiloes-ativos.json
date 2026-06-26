@@ -1,5 +1,17 @@
 {
-  "atualizado_em": "2026-06-26T13:29:58.170Z",
-  "total": 0,
-  "leiloes": []
+  "atualizado_em": "2026-06-26T15:55:02.664Z",
+  "total": 1,
+  "leiloes": [
+    {
+      "titulo": "🔫Granada Spring",
+      "lanceAtual": "R$ 60,00",
+      "lanceInicial": "R$ 60,00",
+      "encerramento": "26/06/2026, 23:00:00",
+      "vendedor": "Vila",
+      "reputacao": "Sem avaliações",
+      "tenant": "Super Leilão Airsoft",
+      "mediaUrl": "/uploads/672853.jpg",
+      "mediaType": "image"
+    }
+  ]
 }
